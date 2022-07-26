@@ -3,36 +3,27 @@
     <v-app :class="dark ? 'bg-dark' : 'bg-light'">
       <app-bar @dark="toggleTheme" @navItem="getNavItem"></app-bar>
       <v-main>
-        <!-- <date-picker v-show="navIndex === 3" :dark="dark" /> -->
-        <!-- <bill-list
-          :dark="dark"
-          :listData="listData"
-          :totalAmount="totalAmount"
-        /> -->
         <list :dark="dark" />
       </v-main>
-      <v-footer app>
-        <!-- -->
+      <v-footer app :class="dark ? 'bg-dark' : 'bg-light'">
+        <Bottom :dark="dark" />
       </v-footer>
     </v-app>
   </div>
 </template>
 
 <script>
-import { accounting } from '../api/index'
-import AppBar from '@/components/AppBar'
-import BillList from '@/components/BillList'
-import DatePicker from '@/components/DatePicker'
-
-import List from '@/components/List'
+import { accounting } from "../api/index"
+import AppBar from "@/components/AppBar"
+import List from "@/components/List"
+import Bottom from "@/components/Bottom"
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
     AppBar,
-    BillList,
-    DatePicker,
     List,
+    Bottom,
   },
   data() {
     return {
@@ -66,8 +57,8 @@ export default {
       this.listData = res.details
       this.totalAmount = res.totalAmount
       console.log(res)
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -82,6 +73,9 @@ export default {
   }
   .bg-dark {
     background-color: rgb(77, 77, 77);
+  }
+  .v-footer {
+    padding: 3px 8px;
   }
 }
 </style>
