@@ -4,8 +4,8 @@
     <v-card class="mt-4 pa-6 mx-auto" max-width="400" :dark="dark">
       本月总消费： ￥<span>{{ monthTotal }}</span>
     </v-card>
-    <v-card class="mt-4 pa-3 mx-auto" max-width="400" :dark="dark">
-      <v-card-subtitle>类别明细</v-card-subtitle>
+    <v-card class="mt-4 pt-3 mx-auto" max-width="400" :dark="dark">
+      <v-card-subtitle class="ml-3">类别明细</v-card-subtitle>
       <v-simple-table>
         <template v-slot:default>
           <thead>
@@ -75,10 +75,16 @@ export default {
         labels: labels,
         datasets: [
           {
+            borderWidth: 3,
             backgroundColor: backgroundColor,
             data: data,
           }
         ]
+      }
+      if (this.dark) {
+        chartData.datasets[0].borderColor = '#1e1e1e'
+      } else {
+        chartData.datasets[0].borderColor = '#ffffff'
       }
       return chartData
     }
@@ -99,5 +105,13 @@ export default {
 <style lang="less" scoped>
 .month-bill {
   padding: 10px;
+}
+</style>
+
+<style lang="less">
+.month-bill {
+  canvas {
+    height: 400px !important;
+  }
 }
 </style>
