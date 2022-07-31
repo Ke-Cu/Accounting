@@ -1,6 +1,6 @@
 <template>
   <div class="app-bar">
-    <v-app-bar color="#f9e5de" dense>
+    <v-app-bar color="#ffffff" dense fixed>
       <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
       <v-toolbar-title>{{ title }}</v-toolbar-title>
       <v-spacer></v-spacer>
@@ -34,7 +34,7 @@ export default {
   name: 'AppBar',
   data() {
     return {
-      title: '今日明细',
+      title: '可家账单',
       dark: false,
       drawer: false,
       group: 0,
@@ -55,7 +55,6 @@ export default {
     clickItem(index) {
       this.title = this.listItems[index].text
       this.drawer = false
-      // this.$emit('navItem', index)
     }
   }
 }

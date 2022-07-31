@@ -3,10 +3,11 @@
     <v-app :class="dark ? 'bg-dark' : 'bg-light'">
       <app-bar @dark="toggleTheme" @navItem="getNavItem"></app-bar>
       <v-main>
-        <list :dark="dark" />
+        <list v-show="currentTab === 'recent'" :dark="dark" />
+        <month-bill v-show="currentTab === 'month'" :dark="dark" />
       </v-main>
       <v-footer app :class="dark ? 'bg-dark' : 'bg-light'">
-        <Bottom :dark="dark" />
+        <Bottom :dark="dark" @currentTab="getCurrentTab" />
       </v-footer>
     </v-app>
   </div>
@@ -16,6 +17,7 @@
 import { accounting } from "../api/index"
 import AppBar from "@/components/AppBar"
 import List from "@/components/List"
+import MonthBill from "@/components/MonthBill"
 import Bottom from "@/components/Bottom"
 
 export default {
@@ -24,6 +26,7 @@ export default {
     AppBar,
     List,
     Bottom,
+    MonthBill,
   },
   data() {
     return {
@@ -31,6 +34,7 @@ export default {
       navIndex: 0,
       listData: [],
       totalAmount: 0,
+      currentTab: 'recent'
     }
   },
   async mounted() {
@@ -56,26 +60,31 @@ export default {
       const res = await accounting.getScopeAmount({ days })
       this.listData = res.details
       this.totalAmount = res.totalAmount
-      console.log(res)
     },
+    getCurrentTab(tab) {
+      this.currentTab = tab
+    }
   },
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less" scope>
 .home {
   width: 100%;
   height: 100%;
   max-width: 600px;
   margin: 0 auto;
+  .v-main {
+    padding-top: 50px !important;
+  }
   .bg-light {
-    background-color: #fff;
+    background-color: #fff !important;
   }
   .bg-dark {
-    background-color: rgb(77, 77, 77);
+    background-color: rgb(77, 77, 77) !important;
   }
   .v-footer {
-    padding: 3px 8px;
+    padding: 0;
   }
 }
 </style>

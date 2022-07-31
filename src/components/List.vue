@@ -52,8 +52,7 @@ export default {
   methods: {
     async getData() {
       const res = await accounting.getScopeAmount({ days: 30 })
-      //   console.log(res)
-      this.billData = res.reverse()
+      this.billData = res.data.reverse()
       this.billData[0].active = true
     }
   },

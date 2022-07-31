@@ -13,11 +13,6 @@ const createEndpoint = (config, parseResponse = true) => {
   let endpoint = axios.create({ ...DEFAULT_CONFIG, ...config })
   endpoint.interceptors.response.use(
     (response) => {
-      if (parseResponse) {
-        return response.data.data === undefined
-          ? response.data
-          : response.data.data
-      }
       return response.data
     },
     async (error) => {
