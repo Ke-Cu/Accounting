@@ -4,7 +4,18 @@
     <v-card class="mt-4 pa-6 mx-auto" max-width="400" :dark="dark">
       本月总消费： ￥<span>{{ monthTotal }}</span>
     </v-card>
-    <v-card class="mt-4 pt-3 mx-auto" max-width="400" :dark="dark">
+    <category-detail
+      v-show="isShowDetail"
+      :dark="dark"
+      :detail="categoryDetail"
+      @hideDetail="isShowDetail = false"
+    />
+    <v-card
+      v-show="monthTotal !== 0 && !isShowDetail"
+      class="mt-4 pt-3 mx-auto"
+      max-width="400"
+      :dark="dark"
+    >
       <v-card-subtitle class="ml-3">类别明细</v-card-subtitle>
       <v-simple-table>
         <template v-slot:default>
@@ -15,7 +26,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in monthDatasets" :key="item.name">
+            <tr
+              v-for="item in monthDatasets"
+              :key="item.name"
+              @click="showDetail(item)"
+            >
               <td>{{ item.type }}</td>
               <td>{{ item.amount }}</td>
             </tr>
@@ -23,7 +38,12 @@
         </template>
       </v-simple-table>
     </v-card>
-    <v-card class="mt-4 pa-3 mx-auto" max-width="400" :dark="dark">
+    <v-card
+      v-show="monthTotal !== 0 && !isShowDetail"
+      class="mt-4 pa-3 mx-auto"
+      max-width="400"
+      :dark="dark"
+    >
       <v-card-subtitle>类别图表</v-card-subtitle>
       <doughnut-chart :dark="dark" :chartData="chartData" />
     </v-card>
@@ -34,10 +54,11 @@
 import BarChart from './BarChart.vue'
 import DatePicker from './DatePicker.vue'
 import DoughnutChart from './DoughnutChart.vue'
+import CategoryDetail from './CategoryDetail.vue'
 import { accounting } from '../api/index'
 
 export default {
-  components: { BarChart, DatePicker, DoughnutChart },
+  components: { BarChart, DatePicker, DoughnutChart, CategoryDetail },
   name: 'MonthBill',
   props: {
     dark: {
@@ -48,6 +69,8 @@ export default {
     return {
       monthTotal: null,
       monthDatasets: [],
+      categoryDetail: {},
+      isShowDetail: false,
     }
   },
   mounted() {
@@ -97,6 +120,11 @@ export default {
     },
     getCurrentDate(dateDetail) {
       this.getMonthBill(dateDetail)
+    },
+    showDetail(item) {
+      console.log(item)
+      this.categoryDetail = item
+      this.isShowDetail = true
     }
   },
 }

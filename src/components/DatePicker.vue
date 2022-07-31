@@ -20,14 +20,15 @@
       </template>
       <v-date-picker v-model="date" type="month" scrollable color="cyan">
         <v-spacer></v-spacer>
-        <v-btn text color="primary" @click="modal = false"> Cancel </v-btn>
-        <v-btn text color="primary" @click="handleClickOK"> OK </v-btn>
+        <v-btn text color="primary" @click="modal = false"> 取消 </v-btn>
+        <v-btn text color="primary" @click="handleClickOK"> 确认 </v-btn>
       </v-date-picker>
     </v-dialog>
   </div>
 </template>
 
 <script>
+import moment from "moment"
 export default {
   name: 'DatePicker',
   props: {
@@ -38,7 +39,7 @@ export default {
   },
   data() {
     return {
-      date: new Date().toISOString().substr(0, 7),
+      date: moment().format('YYYY-MM'),
       modal: false,
     }
   },
