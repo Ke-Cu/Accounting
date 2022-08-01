@@ -1,20 +1,19 @@
 <template>
   <div class="bottom">
-    <!-- <v-card class="mx-auto" :dark="dark"> -->
     <v-bottom-navigation v-model="value" :dark="dark" grow color="cyan">
-      <v-btn value="recent" depressed>
+      <v-btn value="recent" plain>
         <span>最近明细</span>
 
         <v-icon>mdi-history</v-icon>
       </v-btn>
 
-      <v-btn value="month">
+      <v-btn value="month" plain>
         <span>月账单</span>
 
         <v-icon>mdi-equalizer-outline</v-icon>
       </v-btn>
 
-      <v-btn value="other">
+      <v-btn value="other" plain>
         <span>其他数据</span>
 
         <v-icon>mdi-list-box-outline</v-icon>
@@ -51,6 +50,7 @@ export default {
     box-sizing: content-box;
     height: 70px !important;
     padding-bottom: 20px;
+    
   }
 }
 </style>

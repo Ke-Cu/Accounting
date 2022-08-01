@@ -12,8 +12,7 @@
         <div :class="['title', dark ? 'dark' : ' ']" v-bind="attrs" v-on="on">
           <span>
             <span class="month">{{ month }}月</span>
-            消费汇总
-            <span class="year">({{ date }})</span>
+            <span class="text-grey"> 消费汇总 ({{ date }})</span>
           </span>
           <v-icon :dark="dark">mdi-calendar-month-outline</v-icon>
         </div>
@@ -70,10 +69,10 @@ export default {
     margin: 20px 40px;
     .month {
       font-size: 28px;
-      color: #00bcd4;
+      color: #fff;
     }
-    .year {
-      color: #aaa;
+    .text-grey {
+      color: #eee;
     }
   }
   .dark {

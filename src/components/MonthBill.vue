@@ -1,15 +1,19 @@
 <template>
   <div class="month-bill">
-    <date-picker :dark="dark" @currentDate="getCurrentDate" />
-    <v-card class="mt-4 pa-6 mx-auto" max-width="400" :dark="dark">
+    <v-card class="mt-4 pa-4 pt-4 mx-auto" max-width="400" :dark="dark">
+      <v-card class="pt-1 pb-1 mx-auto date-card" color="cyan" dark>
+        <date-picker :dark="dark" @currentDate="getCurrentDate" />
+      </v-card>
       本月总消费： ￥<span>{{ monthTotal }}</span>
     </v-card>
-    <category-detail
-      v-show="isShowDetail"
-      :dark="dark"
-      :detail="categoryDetail"
-      @hideDetail="isShowDetail = false"
-    />
+    <v-expand-transition>
+      <category-detail
+        v-show="isShowDetail"
+        :dark="dark"
+        :detail="categoryDetail"
+        @hideDetail="isShowDetail = false"
+      />
+    </v-expand-transition>
     <v-card
       v-show="monthTotal !== 0 && !isShowDetail"
       class="mt-4 pt-3 mx-auto"
@@ -122,7 +126,6 @@ export default {
       this.getMonthBill(dateDetail)
     },
     showDetail(item) {
-      console.log(item)
       this.categoryDetail = item
       this.isShowDetail = true
     }
@@ -133,6 +136,10 @@ export default {
 <style lang="less" scoped>
 .month-bill {
   padding: 10px;
+  .date-card {
+    position: relative;
+    top: -30px;
+  }
 }
 </style>
 

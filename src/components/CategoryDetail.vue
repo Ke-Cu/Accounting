@@ -8,7 +8,7 @@
           fab
           dark
           x-small
-          color="cyan"
+          color="red lighten-2"
           depressed
           @click="hideDetail"
         >
