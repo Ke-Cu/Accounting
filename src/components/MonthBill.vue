@@ -7,19 +7,9 @@
       本月总消费： ￥<span>{{ monthTotal }}</span>
     </v-card>
     <v-expand-transition>
-      <category-detail
-        v-show="isShowDetail"
-        :dark="dark"
-        :detail="categoryDetail"
-        @hideDetail="isShowDetail = false"
-      />
+      <category-detail v-show="isShowDetail" :dark="dark" :detail="categoryDetail" @hideDetail="isShowDetail = false" />
     </v-expand-transition>
-    <v-card
-      v-show="monthTotal !== 0 && !isShowDetail"
-      class="mt-4 pt-3 mx-auto"
-      max-width="400"
-      :dark="dark"
-    >
+    <v-card v-show="monthTotal !== 0 && !isShowDetail" class="mt-4 pt-3 mx-auto" max-width="400" :dark="dark">
       <v-card-subtitle class="ml-3">类别明细</v-card-subtitle>
       <v-simple-table>
         <template v-slot:default>
@@ -30,11 +20,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-for="item in monthDatasets"
-              :key="item.name"
-              @click="showDetail(item)"
-            >
+            <tr v-for="item in monthDatasets" :key="item.name" @click="showDetail(item)">
               <td>{{ item.type }}</td>
               <td>{{ item.amount }}</td>
             </tr>
@@ -42,12 +28,7 @@
         </template>
       </v-simple-table>
     </v-card>
-    <v-card
-      v-show="monthTotal !== 0 && !isShowDetail"
-      class="mt-4 pa-3 mx-auto"
-      max-width="400"
-      :dark="dark"
-    >
+    <v-card v-show="monthTotal !== 0 && !isShowDetail" class="mt-4 pa-3 mx-auto" max-width="400" :dark="dark">
       <v-card-subtitle>类别图表</v-card-subtitle>
       <doughnut-chart :dark="dark" :chartData="chartData" />
     </v-card>
@@ -117,7 +98,15 @@ export default {
     }
   },
   methods: {
-    async getMonthBill(dateDetail) {
+    async getMonthBill(data) {
+      let dateDetail = data
+      if (!dateDetail) {
+        const now = new Date
+        dateDetail = {
+          'year': now.getFullYear(),
+          'month': now.getMonth() + 1
+        }
+      }
       const res = await accounting.getMonthBill(dateDetail)
       this.monthDatasets = res.data
       this.monthTotal = res.totalAmount
@@ -136,6 +125,7 @@ export default {
 <style lang="less" scoped>
 .month-bill {
   padding: 10px;
+
   .date-card {
     position: relative;
     top: -30px;

@@ -1,10 +1,11 @@
 <template>
   <div class="home">
     <v-app :class="dark ? 'bg-dark' : 'bg-light'">
-      <app-bar @dark="toggleTheme" @navItem="getNavItem"></app-bar>
+      <app-bar :isLoading="isLoading" @dark="toggleTheme" @navItem="getNavItem" @refresh="handleRefresh"></app-bar>
       <v-main>
-        <list v-show="currentTab === 'recent'" :dark="dark" />
-        <month-bill v-show="currentTab === 'month'" :dark="dark" />
+        <list ref="list" v-show="currentTab === 'recent'" :dark="dark" />
+        <month-bill ref="monthBill" v-show="currentTab === 'month'" :dark="dark" />
+        <other v-show="currentTab === 'other'" :dark="dark" />
       </v-main>
       <v-footer app :class="dark ? 'bg-dark' : 'bg-light'">
         <Bottom :dark="dark" @currentTab="getCurrentTab" />
@@ -19,6 +20,7 @@ import AppBar from "@/components/AppBar"
 import List from "@/components/List"
 import MonthBill from "@/components/MonthBill"
 import Bottom from "@/components/Bottom"
+import Other from "@/components/Other"
 
 export default {
   name: "Home",
@@ -27,6 +29,7 @@ export default {
     List,
     Bottom,
     MonthBill,
+    Other,
   },
   data() {
     return {
@@ -34,7 +37,8 @@ export default {
       navIndex: 0,
       listData: [],
       totalAmount: 0,
-      currentTab: 'recent'
+      currentTab: 'recent',
+      isLoading: false,
     }
   },
   async mounted() {
@@ -56,6 +60,15 @@ export default {
         this.getScopeAmount(1)
       }
     },
+    handleRefresh() {
+      this.isLoading = true
+      console.log("refresh")
+      this.$refs.list.getData()
+      this.$refs.monthBill.getMonthBill()
+      setTimeout(() => {
+        this.isLoading = false
+      }, 1000)
+    },
     async getScopeAmount(days) {
       const res = await accounting.getScopeAmount({ days })
       this.listData = res.details
@@ -74,15 +87,19 @@ export default {
   height: 100%;
   max-width: 600px;
   margin: 0 auto;
+
   .v-main {
     padding-top: 50px !important;
   }
+
   .bg-light {
     background-color: #fff !important;
   }
+
   .bg-dark {
     background-color: rgb(77, 77, 77) !important;
   }
+
   .v-footer {
     padding: 0;
   }

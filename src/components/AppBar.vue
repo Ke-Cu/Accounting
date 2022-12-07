@@ -7,15 +7,15 @@
       <v-btn icon @click="toggleTheme">
         <v-icon :class="dark ? 'dark' : 'light'">mdi-brightness-2</v-icon>
       </v-btn>
+      <v-btn icon @click="handleRefresh">
+        <v-icon :size="28" color="#00BCD4">mdi-refresh</v-icon>
+      </v-btn>
+      <!-- <v-progress-circular v-show="!isLoading" indeterminate color="#00BCD4" :size="20"></v-progress-circular> -->
     </v-app-bar>
     <v-navigation-drawer v-model="drawer" absolute temporary :dark="dark">
       <v-list nav dense>
         <v-list-item-group v-model="group">
-          <v-list-item
-            v-for="(item, index) in listItems"
-            :key="index"
-            @click="clickItem(index)"
-          >
+          <v-list-item v-for="(item, index) in listItems" :key="index" @click="clickItem(index)">
             <v-list-item-icon>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-icon>
@@ -32,6 +32,11 @@
 <script>
 export default {
   name: 'AppBar',
+  props: {
+    isLoading: {
+      type: Boolean,
+    }
+  },
   data() {
     return {
       title: '可家账单',
@@ -55,6 +60,9 @@ export default {
     clickItem(index) {
       this.title = this.listItems[index].text
       this.drawer = false
+    },
+    handleRefresh() {
+      this.$emit('refresh')
     }
   }
 }
@@ -67,13 +75,19 @@ export default {
       .light {
         color: #ffb531;
       }
+
       .dark {
         color: #333;
       }
     }
   }
+
   .v-navigation-drawer {
     padding: 30px 10px;
+  }
+
+  .v-progress-circular {
+    margin-right: 10px;
   }
 }
 </style>

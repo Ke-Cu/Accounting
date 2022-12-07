@@ -4,14 +4,8 @@
       <v-list :dark="dark">
         <v-subheader>最近30天</v-subheader>
         <v-divider></v-divider>
-        <v-list-group
-          v-for="(item, index) in billData"
-          :key="index"
-          v-model="item.active"
-          prepend-icon="mdi-calendar-week"
-          no-action
-          color="blue-grey lighten-2 "
-        >
+        <v-list-group v-for="(item, index) in billData" :key="index" v-model="item.active"
+          prepend-icon="mdi-calendar-week" no-action color="blue-grey lighten-2 ">
           <template v-slot:activator>
             <v-list-item-content>
               <v-list-item-title v-text="item.month + '月' + item.day + '日'">
@@ -34,6 +28,7 @@
 
 <script>
 import { accounting } from '../api/index'
+
 export default {
   name: 'List',
   props: {
