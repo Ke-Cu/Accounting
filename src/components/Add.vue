@@ -6,8 +6,28 @@
     <!-- <div class="fixed-element"> -->
     <v-card class="grey lighten-4 pa-6">
       <v-row class="mb-2">
-        <v-btn class="mr-2" color="primary" dark> 2023-08-08 </v-btn>
-        <v-btn class="mr-2" color="red" dark> 餐饮 </v-btn>
+        <v-dialog
+          ref="dialog"
+          v-model="modal"
+          :return-value.sync="date"
+          persistent
+          width="290px"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn class="mr-2" dark small v-bind="attrs" v-on="on">
+              {{ date }}
+            </v-btn>
+          </template>
+          <v-date-picker v-model="date" scrollable>
+            <v-spacer></v-spacer>
+            <v-btn text color="primary" @click="modal = false"> Cancel </v-btn>
+            <v-btn text color="primary" @click="$refs.dialog.save(date)">
+              OK
+            </v-btn>
+          </v-date-picker>
+        </v-dialog>
+
+        <v-btn class="mr-2" color="red" dark small> 餐饮 </v-btn>
       </v-row>
       <v-row>
         <v-text-field
@@ -28,6 +48,14 @@
 
 <script>
 export default {
+  data: () => ({
+    date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+      .toISOString()
+      .substring(0, 10),
+    menu: false,
+    modal: false,
+    menu2: false,
+  }),
   methods: {
     focusAndShowKeyboard() {
       // 获取输入框的引用
