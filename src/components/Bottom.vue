@@ -9,13 +9,14 @@
 
       <v-btn value="month" plain>
         <span>月账单</span>
-
         <v-icon>mdi-equalizer-outline</v-icon>
       </v-btn>
-
+      <v-btn value="updateBill" plain>
+        <span>记账</span>
+        <v-icon>mdi-list-box-outline</v-icon>
+      </v-btn>
       <v-btn value="other" plain>
-        <span>其他数据</span>
-
+        <span>其他</span>
         <v-icon>mdi-list-box-outline</v-icon>
       </v-btn>
     </v-bottom-navigation>
@@ -50,7 +51,6 @@ export default {
     box-sizing: content-box;
     height: 70px !important;
     padding-bottom: 20px;
-    
   }
 }
 </style>

@@ -11,10 +11,10 @@
         {{ date }}
       </v-btn>
     </template>
-    <v-date-picker v-model="date" scrollable>
+    <v-date-picker v-model="date" scrollable color="grey darken-3">
       <v-spacer></v-spacer>
-      <v-btn text color="primary" @click="modal = false"> Cancel </v-btn>
-      <v-btn text color="primary" @click="submit"> OK </v-btn>
+      <v-btn text color="primary" @click="modal = false"> 取消 </v-btn>
+      <v-btn text color="primary" @click="submit"> 确认 </v-btn>
     </v-date-picker>
   </v-dialog>
 </template>

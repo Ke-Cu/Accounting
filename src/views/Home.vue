@@ -1,10 +1,20 @@
 <template>
   <div class="home">
     <v-app :class="dark ? 'bg-dark' : 'bg-light'">
-      <app-bar :isLoading="isLoading" @dark="toggleTheme" @navItem="getNavItem" @refresh="handleRefresh"></app-bar>
+      <app-bar
+        :isLoading="isLoading"
+        @dark="toggleTheme"
+        @navItem="getNavItem"
+        @refresh="handleRefresh"
+      ></app-bar>
       <v-main>
         <list ref="list" v-show="currentTab === 'recent'" :dark="dark" />
-        <month-bill ref="monthBill" v-show="currentTab === 'month'" :dark="dark" />
+        <month-bill
+          ref="monthBill"
+          v-show="currentTab === 'month'"
+          :dark="dark"
+        />
+        <update-bill v-show="currentTab === 'updateBill'" :dark="dark" />
         <other v-show="currentTab === 'other'" :dark="dark" />
       </v-main>
       <v-footer app :class="dark ? 'bg-dark' : 'bg-light'">
@@ -21,6 +31,7 @@ import List from "@/components/List"
 import MonthBill from "@/components/MonthBill"
 import Bottom from "@/components/Bottom"
 import Other from "@/components/Other"
+import UpdateBill from '../components/UpdateBill'
 
 export default {
   name: "Home",
@@ -30,6 +41,7 @@ export default {
     Bottom,
     MonthBill,
     Other,
+    UpdateBill,
   },
   data() {
     return {

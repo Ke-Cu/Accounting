@@ -1,9 +1,9 @@
 <template>
   <div class="container">
-    <div class="top">
+    <!-- <div class="top">
       <button @click="focusAndShowKeyboard">点击聚焦输入框并弹出键盘</button>
-    </div>
-    <v-card class="grey lighten-4 pa-6">
+    </div> -->
+    <v-card class="grey lighten-4 pa-6 mb-4">
       <v-row class="mb-2">
         <DatePickerButton class="mr-2" @updateDate="updateDate" />
         <CategoryButton
@@ -15,17 +15,38 @@
       </v-row>
       <v-row>
         <v-text-field
-          :append-outer-icon="'mdi-send'"
-          ref="numericInput"
           v-model="inputString"
           label="记账"
           solo
+          @keydown.enter="onClickSend"
+          @change="inputChange"
         ></v-text-field>
+        <v-btn class="mt-1 ml-2" icon large @click="onClickSend">
+          <v-icon>mdi-send</v-icon>
+        </v-btn>
       </v-row>
       <v-row class="pa-2 grey--text text--darken-2 text-caption">
         {{ billDetails }}
       </v-row>
+      <!-- <v-row v-show="isTipShow" class="pl-2 red--text text-caption">
+        已使用默认类别：餐饮
+      </v-row> -->
     </v-card>
+    <div class="alert-list">
+      <v-alert
+        v-for="(alert, index) in alertLsit"
+        :key="index"
+        :value="alert.isShow"
+        transition="slide-x-transition"
+        class="text-caption"
+        color="#4CAF50"
+        dark
+        dense
+        elevation="2"
+      >
+        {{ alert.text }}
+      </v-alert>
+    </div>
   </div>
 </template>
 
@@ -46,6 +67,10 @@ export default {
       date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
         .toISOString()
         .substring(0, 10),
+      accountDetail: "",
+      price: "",
+      // isTipShow: false,
+      alertLsit: [],
       categorys: [
         "餐饮",
         "交通",
@@ -71,16 +96,11 @@ export default {
       const { beforeNumber: accountDetail, matchedNumber: price, afterNumber: category } = this.getAccountingResult(
         inputString
       )
-
+      // this.accountDetail = accountDetail
+      // this.price = price
       let billDetails = ""
       if (accountDetail && price) {
-        if (this.categorys.includes(category)) {
-          this.category = category
-        }
-        else {
-          this.category = "餐饮"
-        }
-        billDetails = `${accountDetail} ￥${price}（日期：${this.date}； 类别：${this.category}）`
+        billDetails = `${accountDetail} ￥${price}（日期：${this.date}， 类别：${this.category}）`
       }
       else {
         billDetails = "请输入记账明细"
@@ -112,18 +132,47 @@ export default {
         afterNumber,
       }
     },
-    focusAndShowKeyboard() {
-      // 获取输入框的引用
-      const numericInput = this.$refs.numericInput
-      // 聚焦输入框
-      numericInput.focus()
-    },
+    // focusAndShowKeyboard() {
+    //   // 获取输入框的引用
+    //   const numericInput = this.$refs.numericInput
+    //   // 聚焦输入框
+    //   numericInput.focus()
+    // },
     updateCategory(category) {
       this.category = category
     },
     updateDate(date) {
       this.date = date
     },
+    inputChange() {
+      const inputString = this.inputString.trim()
+      const { beforeNumber: accountDetail, matchedNumber: price, afterNumber: category } = this.getAccountingResult(
+        inputString
+      )
+      if (accountDetail && price) {
+        this.accountDetail = accountDetail
+        this.price = price
+        if (this.categorys.includes(category)) {
+          this.category = category
+        }
+        else {
+          this.category = "餐饮"
+        }
+      }
+    },
+    onClickSend() {
+      if (this.billDetails === "请输入记账明细") {
+        return
+      }
+      this.alertLsit.unshift({
+        text: this.billDetails,
+        isShow: false
+      })
+      setTimeout(() => {
+        this.alertLsit[0].isShow = true
+      }, 100)
+      this.inputString = ""
+    }
   },
 }
 </script>
