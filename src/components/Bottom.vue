@@ -1,23 +1,16 @@
 <template>
   <div class="bottom">
-    <v-bottom-navigation v-model="value" :dark="dark" grow color="cyan">
-      <v-btn value="recent" plain>
-        <span>最近明细</span>
-
-        <v-icon>mdi-history</v-icon>
-      </v-btn>
-
-      <v-btn value="month" plain>
-        <span>月账单</span>
-        <v-icon>mdi-equalizer-outline</v-icon>
-      </v-btn>
-      <v-btn value="updateBill" plain>
-        <span>记账</span>
-        <v-icon>mdi-list-box-outline</v-icon>
-      </v-btn>
-      <v-btn value="other" plain>
-        <span>其他</span>
-        <v-icon>mdi-list-box-outline</v-icon>
+    <v-bottom-navigation
+      v-model="value"
+      :dark="dark"
+      color="cyan"
+      grow
+      height="70"
+      class=""
+    >
+      <v-btn v-for="(item, index) in btnList" :key="index" :value="item.value">
+        <span class="mt-1">{{ item.text }}</span>
+        <v-icon>{{ item.icon }}</v-icon>
       </v-btn>
     </v-bottom-navigation>
   </div>
@@ -34,12 +27,34 @@ export default {
   data() {
     return {
       value: "recent",
+      btnList: [
+        {
+          value: "recent",
+          icon: "mdi-history",
+          text: "最近明细",
+        },
+        {
+          value: "month",
+          icon: "mdi-equalizer-outline",
+          text: "月账单",
+        },
+        {
+          value: "updateBill",
+          icon: "mdi-application-edit-outline",
+          text: "记账",
+        },
+        {
+          value: "user",
+          icon: "mdi-account-circle-outline",
+          text: "个人中心",
+        },
+      ],
     }
   },
   watch: {
     value() {
-      this.$emit('currentTab', this.value)
-    }
+      this.$emit("currentTab", this.value)
+    },
   },
 }
 </script>
@@ -48,9 +63,7 @@ export default {
 .bottom {
   width: 100%;
   .v-bottom-navigation {
-    box-sizing: content-box;
-    height: 70px !important;
-    padding-bottom: 20px;
+    padding-bottom: 90px;
   }
 }
 </style>

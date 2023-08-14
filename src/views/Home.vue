@@ -15,6 +15,7 @@
           :dark="dark"
         />
         <update-bill v-show="currentTab === 'updateBill'" :dark="dark" />
+        <user v-show="currentTab === 'user'" :dark="dark" />
         <other v-show="currentTab === 'other'" :dark="dark" />
       </v-main>
       <v-footer app :class="dark ? 'bg-dark' : 'bg-light'">
@@ -31,7 +32,8 @@ import List from "@/components/List"
 import MonthBill from "@/components/MonthBill"
 import Bottom from "@/components/Bottom"
 import Other from "@/components/Other"
-import UpdateBill from '../components/UpdateBill'
+import UpdateBill from "../components/UpdateBill"
+import User from "../components/User"
 
 export default {
   name: "Home",
@@ -42,6 +44,7 @@ export default {
     MonthBill,
     Other,
     UpdateBill,
+    User,
   },
   data() {
     return {
@@ -49,7 +52,7 @@ export default {
       navIndex: 0,
       listData: [],
       totalAmount: 0,
-      currentTab: 'recent',
+      currentTab: "recent",
       isLoading: false,
     }
   },
@@ -88,7 +91,7 @@ export default {
     },
     getCurrentTab(tab) {
       this.currentTab = tab
-    }
+    },
   },
 }
 </script>

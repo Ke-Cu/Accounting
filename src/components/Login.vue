@@ -1,42 +1,33 @@
 <template>
-  <v-form>
-    <v-container>
-      <v-card class="mx-auto px-4 py-8" max-width="364">
-        <v-form v-model="form" @submit.prevent="onSubmit">
-          <v-text-field
-            v-model="username"
-            :readonly="loading"
-            :rules="[required]"
-            class="mb-2"
-            clearable
-            label="用户名"
-          ></v-text-field>
+  <v-card class="mx-auto px-4 py-8" min-width="364">
+    <v-form v-model="form" @submit.prevent="onSubmit">
+      <v-text-field
+        v-model="username"
+        class="mb-2"
+        clearable
+        label="用户名"
+      ></v-text-field>
 
-          <v-text-field
-            v-model="password"
-            :readonly="loading"
-            :rules="[required]"
-            clearable
-            type="password"
-            label="密码"
-            placeholder="Enter your password"
-          ></v-text-field>
-          <br />
-          <v-btn
-            :disabled="!form"
-            :loading="loading"
-            block
-            color="primary"
-            size="large"
-            type="submit"
-            variant="elevated"
-          >
-            确认
-          </v-btn>
-        </v-form>
-      </v-card>
-    </v-container>
-  </v-form>
+      <v-text-field
+        v-model="password"
+        clearable
+        type="password"
+        label="密码"
+      ></v-text-field>
+      <br />
+      <v-btn
+        :disabled="!form"
+        :loading="loading"
+        block
+        color="primary"
+        size="large"
+        type="submit"
+        variant="elevated"
+      >
+        确认
+      </v-btn>
+    </v-form>
+  </v-card>
 </template>
 
 <script>
