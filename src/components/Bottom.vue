@@ -28,10 +28,15 @@ export default {
     return {
       value: "recent",
       btnList: [
+        // {
+        //   value: "recent",
+        //   icon: "mdi-history",
+        //   text: "最近明细",
+        // },
         {
-          value: "recent",
-          icon: "mdi-history",
-          text: "最近明细",
+          value: "dailyBill",
+          icon: "mdi-calendar-today",
+          text: "日账单",
         },
         {
           value: "month",
@@ -43,20 +48,20 @@ export default {
           icon: "mdi-application-edit-outline",
           text: "记账",
         },
-        {
-          value: "user",
-          icon: "mdi-account-circle-outline",
-          text: "个人中心",
-        },
+        // {
+        //   value: "user",
+        //   icon: "mdi-account-circle-outline",
+        //   text: "个人中心",
+        // },
       ],
-    }
+    };
   },
   watch: {
     value() {
-      this.$emit("currentTab", this.value)
+      this.$emit("currentTab", this.value);
     },
   },
-}
+};
 </script>
 
 <style lang="less" scoped>

@@ -1,7 +1,7 @@
 <template>
   <div class="app-bar">
     <v-app-bar color="#ffffff" dense fixed>
-      <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
+      <!-- <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon> -->
       <v-toolbar-title>{{ title }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon @click="toggleTheme">

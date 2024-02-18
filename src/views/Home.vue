@@ -9,6 +9,7 @@
       ></app-bar>
       <v-main>
         <list ref="list" v-show="currentTab === 'recent'" :dark="dark" />
+        <daily-bill v-show="currentTab === 'dailyBill'" :dark="dark" />
         <month-bill
           ref="monthBill"
           v-show="currentTab === 'month'"
@@ -29,6 +30,7 @@
 import { accounting } from "../api/index"
 import AppBar from "@/components/AppBar"
 import List from "@/components/List"
+import DailyBill from "@/components/DailyBill"
 import MonthBill from "@/components/MonthBill"
 import Bottom from "@/components/Bottom"
 import Other from "@/components/Other"
@@ -40,6 +42,7 @@ export default {
   components: {
     AppBar,
     List,
+    DailyBill,
     Bottom,
     MonthBill,
     Other,
