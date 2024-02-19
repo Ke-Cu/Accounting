@@ -2,7 +2,9 @@
   <div class="delete">
     <v-card class="grey lighten-4 py-4 ma-3">
       <v-row class="ml-6">
-        <v-col cols="5"><DatePickerButton @updateDate="updateDate" /></v-col>
+        <v-col cols="5">
+          <DatePickerButton @updateDate="updateDate" />
+        </v-col>
         <v-col class="mt-1 grey--text text--darken-4">
           支出：￥{{ totalAmount }}
         </v-col>
@@ -27,16 +29,16 @@
               </v-btn>
             </v-list-item-action>
           </v-list-item>
-          <v-divider
-            v-if="index < dayDetails.length - 1"
-            :key="index"
-          ></v-divider>
+          <v-divider v-if="index < dayDetails.length - 1" :key="index">
+          </v-divider>
         </template>
       </v-list>
     </v-card>
     <v-dialog v-model="dialog" width="300">
       <v-card>
-        <v-card-title class="grey darken-3 white--text"> 确认删除 </v-card-title>
+        <v-card-title class="grey darken-3 white--text">
+          确认删除
+        </v-card-title>
         <!-- <v-divider></v-divider> -->
         <v-card-text class="pl-8 pt-4">
           <div>日期：{{ date }}</div>
@@ -47,7 +49,9 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn text @click="dialog = false"> 取消 </v-btn>
-          <v-btn color="primary" text @click="dialog = false"> 确认 </v-btn>
+          <v-btn color="primary" text @click="deleteRecord(dialogData)">
+            确认
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -59,6 +63,7 @@ import { accounting } from "../api/index"
 import DatePickerButton from "@/components/DatePickerButton.vue"
 
 export default {
+  // 之后改掉名字
   name: "Delete",
   components: {
     DatePickerButton,
@@ -84,9 +89,17 @@ export default {
   },
   methods: {
     async getData() {
-      const res = await accounting.getToday()
-      this.dayDetails = res.details
-      this.totalAmount = res.totalAmount
+      const params = {
+        year: parseInt(this.date.substring(0, 4)),
+        month: parseInt(this.date.substring(5, 7)),
+        day: parseInt(this.date.substring(8, 10)),
+      }
+      const details = await accounting.getBillByDate(params)
+      this.dayDetails = details
+      this.totalAmount = 0
+      details.forEach((item) => {
+        this.totalAmount += item.amount
+      })
     },
     onClickDelete(item) {
       this.dialogData = item
@@ -94,6 +107,12 @@ export default {
     },
     updateDate(date) {
       this.date = date
+      this.getData()
+    },
+    async deleteRecord(item) {
+      await accounting.delRecord({ id: item.id })
+      this.getData()
+      this.dialog = false
     },
   },
 }

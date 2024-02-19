@@ -2,10 +2,15 @@ import createEndpoint from './endpoint'
 
 const endpoint = createEndpoint({})
 
-const { get } = endpoint
+const { get, post, delete: deleteMethod } = endpoint
 
 export const accounting = {
   getToday: async () => get('today'),
   getScopeAmount: async (params) => get('recentdays', { params }),
   getMonthBill: async (params) => get('monthlystatistics', { params }),
+  getBillByDate: async (params) => get('records-on-date', { params }),
+  getTypes: async () => get('types'),
+  addType: async (params) => post('type', params),
+  addRecord: async (params) => post('record', params),
+  delRecord: async (params) => deleteMethod('record', { params }),
 }

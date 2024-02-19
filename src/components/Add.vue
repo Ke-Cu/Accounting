@@ -6,7 +6,7 @@
         <CategoryButton
           class="mr-2"
           :category="category"
-          :categorys="categorys"
+          :categorys="categoryArray"
           @updateCategory="updateCategory"
         />
       </v-row>
@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import { accounting } from "../api/index"
 import CategoryButton from "@/components/CategoryButton.vue"
 import DatePickerButton from "@/components/DatePickerButton.vue"
 
@@ -64,23 +65,7 @@ export default {
       accountDetail: "",
       price: "",
       alertLsit: [],
-      categorys: [
-        "餐饮",
-        "交通",
-        "日用品",
-        "服饰",
-        "美妆",
-        "宠物",
-        "电子产品",
-        "住房",
-        "家居",
-        "学习",
-        "汽车",
-        "其他",
-        "医疗",
-        "旅游",
-        "运动",
-      ],
+      categorys: [],
     }
   },
   computed: {
@@ -99,8 +84,19 @@ export default {
       }
       return billDetails
     },
+    categoryArray() {
+      return this.categorys.map((item) => {
+        return item.typeName
+      })
+    },
+  },
+  mounted() {
+    this.getCategorys()
   },
   methods: {
+    async getCategorys() {
+      this.categorys = await accounting.getTypes()
+    },
     getAccountingResult(inputString) {
       // 定义正则表达式
       const regex = /\d+(\.\d+)?/g

@@ -19,15 +19,15 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn text @click="dialog = false">取消</v-btn>
-          <v-btn color="primary" text @click="dialog = false">确认</v-btn>
+          <v-btn color="primary" text @click="addCategory">确认</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
     <v-list class="pa-2">
       <template v-for="(category, index) in categorys">
-        <v-list-item :key="category" v-if="index">
+        <v-list-item :key="category.typeId" v-if="category.typeId">
           <v-list-item-content>
-            <v-list-item-title>{{ category }}</v-list-item-title>
+            <v-list-item-title>{{ category.typeName }}</v-list-item-title>
           </v-list-item-content>
           <v-list-item-action>
             <v-btn icon @click.stop="onClickDelete(category)">
@@ -35,7 +35,11 @@
             </v-btn>
           </v-list-item-action>
         </v-list-item>
-        <v-divider v-if="index < categorys.length - 1" :key="index"></v-divider>
+        <v-divider
+          v-if="index < categorys.length - 1"
+          :key="`${category.typeId}-${index}`"
+        >
+        </v-divider>
       </template>
     </v-list>
     <v-dialog v-model="dialogDelete" width="300">
@@ -44,7 +48,7 @@
           确认删除
         </v-card-title>
         <v-card-text class="pl-8 pt-4">
-          <div>分类：{{ category }}</div>
+          <div>分类：{{ category.typeName }}</div>
           <!-- <div>分类：</div> -->
         </v-card-text>
         <v-divider></v-divider>
@@ -61,6 +65,8 @@
 </template>
 
 <script>
+import { accounting } from "../api/index"
+
 export default {
   name: "CategoryList",
   props: {
@@ -70,38 +76,35 @@ export default {
   },
   data() {
     return {
-      categorys: [
-        "餐饮",
-        "交通",
-        "日用品",
-        "服饰",
-        "美妆",
-        "宠物",
-        "电子产品",
-        "住房",
-        "家居",
-        "学习",
-        "汽车",
-        "其他",
-        "医疗",
-        "旅游",
-        "运动",
-      ],
+      categorys: [],
       dialog: false,
       newCategory: "",
       dialogDelete: false,
       category: "",
-    };
+    }
+  },
+  mounted() {
+    this.getCategorys()
   },
   methods: {
+    async getCategorys() {
+      this.categorys = await accounting.getTypes()
+    },
     onClickDelete(category) {
-      console.log(category);
-      this.category = category;
-      this.dialogDelete = true;
+      console.log(category)
+      this.category = category
+      this.dialogDelete = true
+    },
+    async addCategory() {
+      localStorage.setItem("token", "ZWtzYnlnazprZWppYXpoYW5nZGFuIQ==")
+      if (this.newCategory) {
+        await accounting.addType({ typeName: this.newCategory })
+        this.getCategorys()
+        this.dialog = false
+      }
     },
   },
-};
+}
 </script>
 
-<style>
-</style>
+<style></style>
