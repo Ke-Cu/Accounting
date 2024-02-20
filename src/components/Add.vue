@@ -6,7 +6,7 @@
         <CategoryButton
           class="mr-2"
           :category="category"
-          :categorys="categoryArray"
+          :categorys="categorys"
           @updateCategory="updateCategory"
         />
       </v-row>
@@ -58,7 +58,7 @@ export default {
   data() {
     return {
       inputString: "",
-      category: "餐饮",
+      category: { typeName: "餐饮", typeId: 1 },
       date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
         .toISOString()
         .substring(0, 10),
@@ -74,20 +74,15 @@ export default {
       const {
         beforeNumber: accountDetail,
         matchedNumber: price,
-        afterNumber: category,
+        afterNumber: categoryName,
       } = this.getAccountingResult(inputString)
       let billDetails = ""
       if (accountDetail && price) {
-        billDetails = `${accountDetail} ￥${price}（日期：${this.date}， 类别：${this.category}）`
+        billDetails = `${accountDetail} ￥${price}（日期：${this.date}， 类别：${this.category.typeName}）`
       } else {
         billDetails = "请输入记账明细"
       }
       return billDetails
-    },
-    categoryArray() {
-      return this.categorys.map((item) => {
-        return item.typeName
-      })
     },
   },
   mounted() {
@@ -131,15 +126,20 @@ export default {
       const {
         beforeNumber: accountDetail,
         matchedNumber: price,
-        afterNumber: category,
+        afterNumber: categoryName,
       } = this.getAccountingResult(inputString)
       if (accountDetail && price) {
         this.accountDetail = accountDetail
         this.price = price
-        if (this.categorys.includes(category)) {
-          this.category = category
-        } else {
-          this.category = "餐饮"
+        if (categoryName !== "") {
+          const findIndex = this.categorys.findIndex(
+            (item) => item.typeName === categoryName
+          )
+          if (findIndex !== -1) {
+            this.category = this.categorys[findIndex]
+          } else {
+            this.category = { typeName: "餐饮", typeId: 1 }
+          }
         }
       }
     },

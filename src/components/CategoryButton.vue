@@ -5,11 +5,11 @@
     scrollable
     max-width="300px"
     persistent
-    :return-value.sync="category2"
+    :return-value.sync="selectedCategory"
   >
     <template v-slot:activator="{ on, attrs }">
       <v-btn color="red" dark small v-bind="attrs" v-on="on">
-        {{ category2 }}
+        {{ selectedCategory.typeName }}
       </v-btn>
     </template>
     <v-card>
@@ -17,13 +17,13 @@
       <v-divider></v-divider>
       <v-card-text class="pa-4" style="height: 300px">
         <v-chip-group
-          v-model="category2"
+          v-model="selectedCategory"
           active-class="primary--text"
           mandatory
           column
         >
-          <v-chip v-for="tag in categorys" :key="tag" :value="tag">
-            {{ tag }}
+          <v-chip v-for="tag in categorys" :key="tag.typeId" :value="tag">
+            {{ tag.typeName }}
           </v-chip>
         </v-chip-group>
       </v-card-text>
@@ -38,35 +38,34 @@
 
 <script>
 export default {
-  name: 'CategoryButton',
+  name: "CategoryButton",
   props: {
     category: {
-      default: "餐饮",
-      type: String,
+      default: { typeName: "餐饮", typeId: 1 },
+      type: Object,
     },
     categorys: {
       type: Array,
-    }
+    },
   },
   data() {
     return {
-      dialogm1: '',
       dialog: false,
     }
   },
   computed: {
-    category2: {
+    selectedCategory: {
       get: function () {
         return this.category
       },
       set: function (newValue) {
-        this.$emit('updateCategory', newValue)
-      }
-    }
+        this.$emit("updateCategory", newValue)
+      },
+    },
   },
   methods: {
     submit() {
-      this.$refs.dialog.save(this.category2)
+      this.$refs.dialog.save(this.selectedCategory)
     },
   },
 }
