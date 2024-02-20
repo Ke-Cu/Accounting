@@ -13,7 +13,7 @@
             </v-list-item-content>
             ￥{{ item.dayTotal }}
           </template>
-          <v-list-item v-for="child in item.records" :key="child.msgId">
+          <v-list-item v-for="child in item.records" :key="child.id">
             <v-list-item-content>
               <v-list-item-title v-text="child.item"></v-list-item-title>
               <v-list-item-subtitle> {{ child.typeName }}</v-list-item-subtitle>

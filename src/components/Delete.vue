@@ -13,7 +13,7 @@
     <v-card class="ma-3">
       <v-list>
         <template v-for="(item, index) in dayDetails">
-          <v-list-item :key="item.msgId" v-if="item.msgId">
+          <v-list-item :key="item.id" v-if="item.id">
             <v-list-item-content>
               <v-list-item-title>{{ item.item }}</v-list-item-title>
               <v-list-item-subtitle class="">

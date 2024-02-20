@@ -33,7 +33,7 @@
         :value="alert.isShow"
         transition="slide-x-transition"
         class="text-caption"
-        color="#4CAF50"
+        :color="alert.color"
         dark
         dense
         elevation="2"
@@ -132,29 +132,48 @@ export default {
         this.accountDetail = accountDetail
         this.price = price
         if (categoryName !== "") {
-          const findIndex = this.categorys.findIndex(
+          const findedIndex = this.categorys.findIndex(
             (item) => item.typeName === categoryName
           )
-          if (findIndex !== -1) {
-            this.category = this.categorys[findIndex]
+          if (findedIndex !== -1) {
+            this.category = this.categorys[findedIndex]
           } else {
             this.category = { typeName: "餐饮", typeId: 1 }
           }
         }
       }
     },
-    onClickSend() {
+    async onClickSend() {
       if (this.billDetails === "请输入记账明细") {
         return
       }
-      this.alertLsit.unshift({
-        text: this.billDetails,
-        isShow: false,
-      })
-      setTimeout(() => {
-        this.alertLsit[0].isShow = true
-      }, 100)
-      this.inputString = ""
+      const params = {
+        createTime: new Date(this.date).getTime(),
+        item: this.accountDetail,
+        amount: this.price,
+        typeId: this.category.typeId,
+      }
+      try {
+        await accounting.addRecord(params)
+        this.alertLsit.unshift({
+          text: this.billDetails,
+          color: "green",
+          isShow: false,
+        })
+        setTimeout(() => {
+          this.alertLsit[0].isShow = true
+        }, 100)
+        this.inputString = ""
+      } catch (error) {
+        this.alertLsit.unshift({
+          text: "记账失败 （" + error.response.data + "）",
+          color: "red",
+          isShow: false,
+        })
+        setTimeout(() => {
+          this.alertLsit[0].isShow = true
+        }, 100)
+      }
     },
   },
 }
