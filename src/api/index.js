@@ -14,3 +14,13 @@ export const accounting = {
   addRecord: async (params) => post('record', params),
   delRecord: async (params) => deleteMethod('record', { params }),
 }
+
+const authEndpoint = createEndpoint({
+  baseURL: 'http://106.55.179.247:5000/auth/'
+})
+
+const { get: authGet } = authEndpoint
+
+export const auth = {
+  verify: async (params) => authGet('verify', params),
+}

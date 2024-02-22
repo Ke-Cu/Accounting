@@ -5,7 +5,8 @@ import VueRouter from 'vue-router';
 
 // 导入你的组件
 import Home from '@/views/Home.vue';
-// import About from '@/views/About.vue';
+import User from '@/views/User.vue';
+
 
 Vue.use(VueRouter);
 
@@ -15,11 +16,11 @@ const routes = [
         name: 'Home',
         component: Home
     },
-    // {
-    //     path: '/about',
-    //     name: 'About',
-    //     component: About
-    // }
+    {
+        path: '/user',
+        name: 'user',
+        component: User
+    }
 ];
 
 const router = new VueRouter({

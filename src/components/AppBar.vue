@@ -2,7 +2,8 @@
   <div class="app-bar">
     <v-app-bar color="#ffffff" dense fixed>
       <!-- <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon> -->
-      <v-toolbar-title>{{ title }}</v-toolbar-title>
+      <img src="../assets/cat.png" alt="logo" height="25" />
+      <v-toolbar-title class="ml-1">{{ title }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon @click="toggleTheme">
         <v-icon :class="dark ? 'dark' : 'light'">mdi-brightness-2</v-icon>
