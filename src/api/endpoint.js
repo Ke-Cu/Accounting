@@ -9,10 +9,11 @@ const DEFAULT_CONFIG = {
   },
 }
 
-const createEndpoint = (config, parseResponse = true) => {
+const createEndpoint = (config, fullResponse) => {
   let endpoint = axios.create({ ...DEFAULT_CONFIG, ...config })
   endpoint.interceptors.request.use(
     config => {
+      console.log(config, parseResponse)
       if (localStorage.getItem('token')) {
         config.headers.Authorization = 'Basic ' + localStorage.getItem('token')
       }
@@ -25,6 +26,10 @@ const createEndpoint = (config, parseResponse = true) => {
   )
   endpoint.interceptors.response.use(
     (response) => {
+      // console.log(response)
+      if (fullResponse) {
+        return response
+      }
       return response.data
     },
     async (error) => {

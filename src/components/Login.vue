@@ -1,9 +1,11 @@
 <template>
   <div class="pa-4">
     <div>
-      <v-btn color="primary">回到记账</v-btn>
+      <v-icon large>mdi-chevron-left</v-icon>
     </div>
-    <v-alert class="mt-2" type="error" dense>账号或密码错误，请检查</v-alert>
+    <v-alert :value="isAlertShow" class="mt-2" type="error" dense>
+      账号或密码错误，请检查
+    </v-alert>
     <div class="my-10 pt-6 text-h5">
       <p class="text-center">添加账号</p>
     </div>
@@ -85,6 +87,7 @@ export default {
     username: null,
     password: null,
     loading: false,
+    isAlertShow: false,
   }),
 
   methods: {
@@ -103,15 +106,23 @@ export default {
       localStorage.setItem("token", token)
 
       this.loading = true
-      auth.verify().then((res) => {
-        if (res.status === 401) {
-          // this.$router.push("/login")
-          localStorage.removeItem("token")
-        } else {
-          this.$router.push("/")
-        }
-      })
-      this.loading = false
+      auth
+        .verify()
+        .then((res) => {
+          console.log(res)
+          // localStorage.setItem("token", token)
+        })
+        .catch((err) => {
+          if (err.response.status === 401) {
+            this.isAlertShow = true
+            localStorage.removeItem("token")
+          }
+        })
+        .finally(() => {
+          // this.$router.push("/")
+          this.loading = false
+        })
+      // this.loading = false
     },
     required(v) {
       return !!v || "不能为空"
