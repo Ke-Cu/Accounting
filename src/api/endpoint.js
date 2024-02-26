@@ -9,11 +9,11 @@ const DEFAULT_CONFIG = {
   },
 }
 
-const createEndpoint = (config, fullResponse) => {
+const createEndpoint = (config, parseResponse = true) => {
   let endpoint = axios.create({ ...DEFAULT_CONFIG, ...config })
   endpoint.interceptors.request.use(
     config => {
-      console.log(config, parseResponse)
+      // console.log(config, parseResponse)
       if (localStorage.getItem('token')) {
         config.headers.Authorization = 'Basic ' + localStorage.getItem('token')
       }
@@ -25,15 +25,16 @@ const createEndpoint = (config, fullResponse) => {
     },
   )
   endpoint.interceptors.response.use(
-    (response) => {
-      // console.log(response)
-      if (fullResponse) {
-        return response
-      }
-      return response.data
+    response => {
+      return parseResponse ? response.data || response : response
     },
     async (error) => {
       console.error(error.message)
+      if (error.response && error.response.status === 401) {
+        console.log('unauthorized')
+        localStorage.removeItem('token')
+        // window.location.href = '/user'
+      }
       return Promise.reject(error)
     }
   )

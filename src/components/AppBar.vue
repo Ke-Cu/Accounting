@@ -1,9 +1,11 @@
 <template>
   <div class="app-bar">
     <v-app-bar color="#ffffff" dense fixed>
-      <!-- <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon> -->
       <img src="../assets/cat.png" alt="logo" height="25" />
       <v-toolbar-title class="ml-1">{{ title }}</v-toolbar-title>
+      <span :class="[classStatus, 'text--darken-1']" @click="goLogin">
+        （{{ loginStatus }}）
+      </span>
       <v-spacer></v-spacer>
       <v-btn icon @click="toggleTheme">
         <v-icon :class="dark ? 'dark' : 'light'">mdi-brightness-2</v-icon>
@@ -11,12 +13,15 @@
       <v-btn icon @click="handleRefresh">
         <v-icon :size="28" color="#00BCD4">mdi-refresh</v-icon>
       </v-btn>
-      <!-- <v-progress-circular v-show="!isLoading" indeterminate color="#00BCD4" :size="20"></v-progress-circular> -->
     </v-app-bar>
     <v-navigation-drawer v-model="drawer" absolute temporary :dark="dark">
       <v-list nav dense>
         <v-list-item-group v-model="group">
-          <v-list-item v-for="(item, index) in listItems" :key="index" @click="clickItem(index)">
+          <v-list-item
+            v-for="(item, index) in listItems"
+            :key="index"
+            @click="clickItem(index)"
+          >
             <v-list-item-icon>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-icon>
@@ -32,40 +37,53 @@
 
 <script>
 export default {
-  name: 'AppBar',
+  name: "AppBar",
   props: {
     isLoading: {
       type: Boolean,
-    }
+    },
   },
   data() {
     return {
-      title: '可家账单',
+      title: "可家账单",
       dark: false,
       drawer: false,
       group: 0,
       listItems: [
-        { icon: 'mdi-calendar-today', text: '今日明细' },
-        { icon: 'mdi-calendar-week', text: '最近一周' },
-        { icon: 'mdi-calendar-month', text: '最近一月' },
-        { icon: 'mdi-calendar-blank', text: '自定义日期' },
-        { icon: 'mdi-cog', text: '设置' },
+        { icon: "mdi-calendar-today", text: "今日明细" },
+        { icon: "mdi-calendar-week", text: "最近一周" },
+        { icon: "mdi-calendar-month", text: "最近一月" },
+        { icon: "mdi-calendar-blank", text: "自定义日期" },
+        { icon: "mdi-cog", text: "设置" },
       ],
     }
   },
+  computed: {
+    classStatus() {
+      return localStorage.getItem("token") ? "green--text" : "red--text"
+    },
+    loginStatus() {
+      return localStorage.getItem("token") ? "已登录" : "未登录"
+    },
+  },
   methods: {
+    goLogin() {
+      if (!localStorage.getItem("token")) {
+        this.$router.push("/user")
+      }
+    },
     toggleTheme() {
       this.dark = !this.dark
-      this.$emit('dark', this.dark)
+      this.$emit("dark", this.dark)
     },
     clickItem(index) {
       this.title = this.listItems[index].text
       this.drawer = false
     },
     handleRefresh() {
-      this.$emit('refresh')
-    }
-  }
+      this.$emit("refresh")
+    },
+  },
 }
 </script>
 

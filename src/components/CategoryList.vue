@@ -96,7 +96,6 @@ export default {
       this.dialogDelete = true
     },
     async addCategory() {
-      localStorage.setItem("token", "ZWtzYnlnazprZWppYXpoYW5nZGFuIQ==")
       if (this.newCategory) {
         await accounting.addType({ typeName: this.newCategory })
         this.getCategorys()

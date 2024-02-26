@@ -1,7 +1,7 @@
 <template>
   <div class="pa-4">
     <div>
-      <v-icon large>mdi-chevron-left</v-icon>
+      <v-icon large @click="goBack">mdi-chevron-left</v-icon>
     </div>
     <v-alert :value="isAlertShow" class="mt-2" type="error" dense>
       账号或密码错误，请检查
@@ -46,39 +46,8 @@
   </div>
 </template>
 
-<!-- <template>
-  <v-form class="ma-6" v-model="form" @submit.prevent="onSubmit">
-    <v-text-field
-      v-model="username"
-      class="mb-2"
-      clearable
-      label="用户名"
-    ></v-text-field>
-
-    <v-text-field
-      v-model="password"
-      clearable
-      type="password"
-      label="密码"
-    ></v-text-field>
-    <br />
-    <v-btn
-      :disabled="!form"
-      :loading="loading"
-      block
-      color="primary"
-      size="large"
-      type="submit"
-      variant="elevated"
-    >
-      确认
-    </v-btn>
-  </v-form>
-</template> -->
-
 <script>
 import { auth } from "@/api"
-// import md5 from "js-md5"
 
 export default {
   name: "Login",
@@ -91,13 +60,14 @@ export default {
   }),
 
   methods: {
+    goBack() {
+      this.$router.go(-1)
+    },
     getToken(formData) {
-      // const token = md5(formData.username + formData.password)
       const token = window.btoa(formData.username + ":" + formData.password)
       return token
     },
     onSubmit() {
-      // console.log(md5("Hello"))
       if (!this.form) return
       const token = this.getToken({
         username: this.username,
@@ -109,20 +79,20 @@ export default {
       auth
         .verify()
         .then((res) => {
-          console.log(res)
-          // localStorage.setItem("token", token)
+          if (res.status === 200) {
+            localStorage.setItem("token", token)
+            this.$router.push("/")
+          }
         })
         .catch((err) => {
           if (err.response.status === 401) {
             this.isAlertShow = true
-            localStorage.removeItem("token")
+            // localStorage.removeItem("token")
           }
         })
         .finally(() => {
-          // this.$router.push("/")
           this.loading = false
         })
-      // this.loading = false
     },
     required(v) {
       return !!v || "不能为空"
@@ -134,10 +104,5 @@ export default {
 <style>
 .login {
   width: 100%;
-  /* margin-top: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column; */
 }
 </style>

@@ -165,8 +165,14 @@ export default {
         }, 100)
         this.inputString = ""
       } catch (error) {
+        const alertText =
+          error.response.status === 401
+            ? "记账失败（未登录）"
+            : error.response.data != ""
+            ? error.response.data
+            : "记账失败"
         this.alertLsit.unshift({
-          text: "记账失败 （" + error.response.data + "）",
+          text: alertText,
           color: "red",
           isShow: false,
         })

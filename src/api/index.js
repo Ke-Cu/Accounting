@@ -22,5 +22,5 @@ const authEndpoint = createEndpoint({
 const { get: authGet } = authEndpoint
 
 export const auth = {
-  verify: async () => authGet('verify', { params: "", parseResponse: false }),
+  verify: async () => authGet('verify', ""),
 }
