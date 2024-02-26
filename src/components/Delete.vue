@@ -100,6 +100,7 @@ export default {
       details.forEach((item) => {
         this.totalAmount += item.amount
       })
+      this.totalAmount = this.totalAmount.toFixed(2)
     },
     onClickDelete(item) {
       this.dialogData = item

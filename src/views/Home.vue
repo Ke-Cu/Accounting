@@ -80,7 +80,7 @@ export default {
     },
     handleRefresh() {
       this.isLoading = true
-      console.log("refresh")
+      // console.log("refresh")
       this.$refs.list.getData()
       this.$refs.monthBill.getMonthBill()
       setTimeout(() => {
