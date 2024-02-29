@@ -3,7 +3,11 @@
     <v-card class="grey lighten-4 py-4 ma-3">
       <v-row class="ml-6">
         <v-col cols="5">
-          <DatePickerButton @updateDate="updateDate" />
+          <DatePickerButton
+            :date="date"
+            @updateDate="updateDate"
+            @onSubmit="getData"
+          />
         </v-col>
         <v-col class="mt-1 grey--text text--darken-4">
           支出：￥{{ totalAmount }}
@@ -39,7 +43,6 @@
         <v-card-title class="grey darken-3 white--text">
           确认删除
         </v-card-title>
-        <!-- <v-divider></v-divider> -->
         <v-card-text class="pl-8 pt-4">
           <div>日期：{{ date }}</div>
           <div>{{ dialogData.item }} （{{ dialogData.typeName }} ）</div>
@@ -63,7 +66,6 @@ import { accounting } from "../api/index"
 import DatePickerButton from "@/components/DatePickerButton.vue"
 
 export default {
-  // 之后改掉名字
   name: "Delete",
   components: {
     DatePickerButton,
@@ -108,7 +110,6 @@ export default {
     },
     updateDate(date) {
       this.date = date
-      this.getData()
     },
     async deleteRecord(item) {
       await accounting.delRecord({ id: item.id })

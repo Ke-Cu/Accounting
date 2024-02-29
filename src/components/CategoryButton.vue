@@ -8,7 +8,15 @@
     :return-value.sync="selectedCategory"
   >
     <template v-slot:activator="{ on, attrs }">
-      <v-btn color="red" dark small v-bind="attrs" v-on="on">
+      <v-btn
+        class="rounded-t-lg px-4"
+        color="red"
+        tile
+        dark
+        small
+        v-bind="attrs"
+        v-on="on"
+      >
         {{ selectedCategory.typeName }}
       </v-btn>
     </template>

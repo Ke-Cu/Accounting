@@ -1,8 +1,10 @@
 <template>
-  <div class="container">
+  <div class="pa-3 pt-0">
     <v-card class="grey lighten-4 pa-6 mb-4">
-      <v-row class="mb-2">
-        <DatePickerButton class="mr-2" @updateDate="updateDate" />
+      <v-row justify="center">
+        <DataPickerPage :date="date" @updateDate="updateDate" />
+      </v-row>
+      <v-row class="mt-5">
         <CategoryButton
           class="mr-2"
           :category="category"
@@ -47,13 +49,13 @@
 <script>
 import { accounting } from "../api/index"
 import CategoryButton from "@/components/CategoryButton.vue"
-import DatePickerButton from "@/components/DatePickerButton.vue"
+import DataPickerPage from "@/components/DatePickerPage.vue"
 
 export default {
   name: "Add",
   components: {
     CategoryButton,
-    DatePickerButton,
+    DataPickerPage,
   },
   data() {
     return {
@@ -185,14 +187,4 @@ export default {
 }
 </script>
 
-<style>
-.container {
-  position: relative;
-  padding-bottom: 120px; /* 给固定元素留出空间 */
-}
-.top {
-  width: 100%;
-  padding: 10px;
-  box-sizing: border-box;
-}
-</style>
+<style></style>
