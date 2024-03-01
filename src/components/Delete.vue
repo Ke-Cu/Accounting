@@ -16,6 +16,10 @@
       </v-row>
     </v-card>
     <v-card class="ma-3">
+      <div v-if="dayDetails.length === 0" class="pa-6 text-center">
+        <v-icon color="grey " large>mdi-emoticon-sad-outline</v-icon>
+        <div class="grey--text text--darken-2">暂无记录</div>
+      </div>
       <v-list>
         <template v-for="(item, index) in dayDetails">
           <v-list-item :key="item.id" v-if="item.id">
