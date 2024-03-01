@@ -36,11 +36,28 @@
         transition="slide-x-transition"
         class="text-caption"
         :color="alert.color"
+        min-height="37"
         dark
         dense
         elevation="2"
       >
-        {{ alert.text }}
+        <v-row
+          @touchstart.stop="touchstart"
+          @touchmove.stop="touchmove($event, alert)"
+        >
+          <v-col cols="10">
+            {{ alert.text }}
+          </v-col>
+          <v-col cols="2">
+            <span class="pl-6">
+              <transition name="slide-fade">
+                <v-btn icon x-small v-show="alert.isShowBtn">
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </transition>
+            </span>
+          </v-col>
+        </v-row>
       </v-alert>
     </div>
   </div>
@@ -80,7 +97,7 @@ export default {
       } = this.getAccountingResult(inputString)
       let billDetails = ""
       if (accountDetail && price) {
-        billDetails = `${accountDetail} ￥${price}（日期：${this.date}， 类别：${this.category.typeName}）`
+        billDetails = `${accountDetail} ￥${price}（${this.date} ${this.category.typeName}）`
       } else {
         billDetails = "请输入记账明细"
       }
@@ -91,6 +108,20 @@ export default {
     this.getCategorys()
   },
   methods: {
+    touchstart(e) {
+      this.startX = e.touches[0].clientX
+      this.startY = e.touches[0].clientY
+    },
+    touchmove(e, alert) {
+      this.moveX = e.touches[0].clientX
+      this.moveY = e.touches[0].clientY
+
+      if (this.moveX - this.startX <= -50) {
+        alert.isShowBtn = true
+      } else if (this.moveX - this.startX >= 50) {
+        alert.isShowBtn = false
+      }
+    },
     async getCategorys() {
       this.categorys = await accounting.getTypes()
     },
@@ -156,16 +187,8 @@ export default {
         typeId: this.category.typeId,
       }
       try {
-        await accounting.addRecord(params)
-        this.alertLsit.unshift({
-          text: this.billDetails,
-          color: "green",
-          isShow: false,
-        })
-        setTimeout(() => {
-          this.alertLsit[0].isShow = true
-        }, 100)
-        this.inputString = ""
+        const res = await accounting.addRecord(params)
+        // console.log(res)
       } catch (error) {
         const alertText =
           error.response.status === 401
@@ -181,10 +204,31 @@ export default {
         setTimeout(() => {
           this.alertLsit[0].isShow = true
         }, 100)
+      } finally {
+        this.alertLsit.unshift({
+          text: this.billDetails,
+          color: "green",
+          isShow: false,
+          isShowBtn: false,
+        })
+        setTimeout(() => {
+          this.alertLsit[0].isShow = true
+        }, 100)
+        this.inputString = ""
       }
     },
   },
 }
 </script>
 
-<style></style>
+<style lang="less" scoped>
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active for below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}
+</style>
