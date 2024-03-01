@@ -10,7 +10,11 @@
     >
       <v-icon> mdi-chevron-left </v-icon>
     </v-btn>
-    <DatePickerButton :date="datePick" @updateDate="updateDate" />
+    <DatePickerButton
+      :date="datePick"
+      @updateDate="updateDate"
+      @onSubmit="onSubmit"
+    />
     <v-btn
       class="mx-4"
       width="30"
@@ -55,14 +59,19 @@ export default {
       const date = new Date(this.date)
       date.setDate(date.getDate() - 1)
       this.$emit("updateDate", date.toISOString().substring(0, 10))
+      this.$emit("turnPage")
     },
     onClickForward() {
       const date = new Date(this.date)
       date.setDate(date.getDate() + 1)
       this.$emit("updateDate", date.toISOString().substring(0, 10))
+      this.$emit("turnPage")
     },
     updateDate(date) {
       this.$emit("updateDate", date)
+    },
+    onSubmit(date) {
+      this.$emit("onSubmit", date)
     },
   },
 }

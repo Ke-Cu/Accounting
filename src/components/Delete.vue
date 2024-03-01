@@ -1,17 +1,18 @@
 <template>
   <div class="delete">
-    <v-card class="grey lighten-4 py-4 ma-3">
-      <v-row class="ml-6">
-        <v-col cols="5">
-          <DatePickerButton
-            :date="date"
-            @updateDate="updateDate"
-            @onSubmit="getData"
-          />
-        </v-col>
-        <v-col class="mt-1 grey--text text--darken-4">
-          支出：￥{{ totalAmount }}
-        </v-col>
+    <v-card class="grey lighten-4 py-6 ma-3">
+      <v-row justify="center">
+        <DatePickerPage
+          :date="date"
+          @updateDate="updateDate"
+          @onSubmit="getData"
+          @turnPage="getData"
+        />
+      </v-row>
+      <v-row justify="end">
+        <span class="mt-4 mr-8 grey--text text--darken-4">
+          合计支出：￥{{ totalAmount }}
+        </span>
       </v-row>
     </v-card>
     <v-card class="ma-3">
@@ -63,12 +64,14 @@
 
 <script>
 import { accounting } from "../api/index"
-import DatePickerButton from "@/components/DatePickerButton.vue"
+import DataPickerPage from "@/components/DatePickerPage.vue"
+import DatePickerPage from "./DatePickerPage.vue"
 
 export default {
   name: "Delete",
   components: {
-    DatePickerButton,
+    DataPickerPage,
+    DatePickerPage,
   },
   data() {
     return {
