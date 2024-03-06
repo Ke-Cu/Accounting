@@ -8,10 +8,19 @@
       </span>
       <v-spacer></v-spacer>
       <v-btn icon @click="toggleTheme">
-        <v-icon :class="dark ? 'dark' : 'light'">mdi-brightness-2</v-icon>
+        <v-icon :class="dark ? 'dark' : 'light'">
+          mdi-white-balance-sunny
+        </v-icon>
       </v-btn>
       <v-btn icon @click="handleRefresh">
-        <v-icon :size="28" color="#00BCD4">mdi-refresh</v-icon>
+        <v-icon
+          :size="28"
+          color="grey darken-3"
+          :class="{ rotated: rotated, 'no-rotate': !rotated }"
+          @transitionend="rotated = false"
+        >
+          mdi-refresh
+        </v-icon>
       </v-btn>
     </v-app-bar>
     <v-navigation-drawer v-model="drawer" absolute temporary :dark="dark">
@@ -56,6 +65,7 @@ export default {
         { icon: "mdi-calendar-blank", text: "自定义日期" },
         { icon: "mdi-cog", text: "设置" },
       ],
+      rotated: false,
     }
   },
   computed: {
@@ -82,6 +92,7 @@ export default {
     },
     handleRefresh() {
       this.$emit("refresh")
+      this.rotated = true
     },
   },
 }
@@ -107,6 +118,12 @@ export default {
 
   .v-progress-circular {
     margin-right: 10px;
+  }
+  .rotated {
+    transform: rotate(360deg);
+  }
+  .no-rotate {
+    transition: none !important;
   }
 }
 </style>
