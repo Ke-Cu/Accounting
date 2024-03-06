@@ -59,5 +59,8 @@ export default {
   .v-bottom-navigation {
     padding-bottom: 90px;
   }
+  .v-btn:before {
+    background-color: transparent;
+  }
 }
 </style>
