@@ -51,7 +51,12 @@
           <v-col cols="2">
             <span class="pl-6">
               <transition name="slide-fade">
-                <v-btn icon x-small v-show="alert.isShowBtn">
+                <v-btn
+                  v-show="alert.isShowBtn"
+                  @click="onDeleteRecord(index, alert)"
+                  icon
+                  x-small
+                >
                   <v-icon>mdi-close</v-icon>
                 </v-btn>
               </transition>
@@ -118,6 +123,11 @@ export default {
 
       if (this.moveX - this.startX <= -50) {
         alert.isShowBtn = true
+        this.alertLsit.forEach((item) => {
+          if (item !== alert) {
+            item.isShowBtn = false
+          }
+        })
       } else if (this.moveX - this.startX >= 50) {
         alert.isShowBtn = false
       }
@@ -186,9 +196,10 @@ export default {
         amount: this.price,
         typeId: this.category.typeId,
       }
+      let id = -1
       try {
         const res = await accounting.addRecord(params)
-        // console.log(res)
+        id = res.data.id
       } catch (error) {
         const alertText =
           error.response.status === 401
@@ -206,6 +217,7 @@ export default {
         }, 100)
       } finally {
         this.alertLsit.unshift({
+          id,
           text: this.billDetails,
           color: "green",
           isShow: false,
@@ -215,6 +227,16 @@ export default {
           this.alertLsit[0].isShow = true
         }, 100)
         this.inputString = ""
+      }
+    },
+    async onDeleteRecord(index, data) {
+      if (data.id === -1) {
+        return
+      }
+      try {
+        await accounting.delRecord({ id: data.id })
+      } finally {
+        this.alertLsit.splice(index, 1)
       }
     },
   },
