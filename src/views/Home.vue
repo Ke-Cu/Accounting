@@ -8,16 +8,7 @@
         @refresh="handleRefresh"
       ></app-bar>
       <v-main>
-        <list ref="list" v-show="currentTab === 'recent'" :dark="dark" />
-        <daily-bill v-show="currentTab === 'dailyBill'" :dark="dark" />
-        <month-bill
-          ref="monthBill"
-          v-show="currentTab === 'month'"
-          :dark="dark"
-        />
-        <update-bill v-show="currentTab === 'updateBill'" :dark="dark" />
-        <user v-show="currentTab === 'user'" :dark="dark" />
-        <other v-show="currentTab === 'other'" :dark="dark" />
+        <router-view></router-view>
       </v-main>
       <v-footer app :class="dark ? 'bg-dark' : 'bg-light'">
         <Bottom :dark="dark" @currentTab="getCurrentTab" />
@@ -29,25 +20,19 @@
 <script>
 import { accounting } from "../api/index"
 import AppBar from "@/components/AppBar"
-import List from "@/components/List"
+import Bottom from "@/components/Bottom"
 import DailyBill from "@/components/DailyBill"
 import MonthBill from "@/components/MonthBill"
-import Bottom from "@/components/Bottom"
-import Other from "@/components/Other"
 import UpdateBill from "../components/UpdateBill"
-import User from "../components/User"
 
 export default {
   name: "Home",
   components: {
     AppBar,
-    List,
-    DailyBill,
     Bottom,
+    DailyBill,
     MonthBill,
-    Other,
     UpdateBill,
-    User,
   },
   data() {
     return {
@@ -80,7 +65,6 @@ export default {
     },
     handleRefresh() {
       this.isLoading = true
-      // console.log("refresh")
       this.$refs.list.getData()
       this.$refs.monthBill.getMonthBill()
       setTimeout(() => {
@@ -94,6 +78,7 @@ export default {
     },
     getCurrentTab(tab) {
       this.currentTab = tab
+      this.$router.push({ name: tab })
     },
   },
 }

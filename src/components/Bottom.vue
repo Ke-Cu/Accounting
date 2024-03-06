@@ -4,9 +4,8 @@
       v-model="value"
       :dark="dark"
       color="cyan"
-      grow
       height="70"
-      class=""
+      grow
     >
       <v-btn v-for="(item, index) in btnList" :key="index" :value="item.value">
         <span class="mt-1">{{ item.text }}</span>
@@ -28,13 +27,8 @@ export default {
     return {
       value: "recent",
       btnList: [
-        // {
-        //   value: "recent",
-        //   icon: "mdi-history",
-        //   text: "最近明细",
-        // },
         {
-          value: "dailyBill",
+          value: "daily",
           icon: "mdi-calendar-today",
           text: "日账单",
         },
@@ -44,24 +38,19 @@ export default {
           text: "月账单",
         },
         {
-          value: "updateBill",
+          value: "update",
           icon: "mdi-application-edit-outline",
           text: "记账",
         },
-        // {
-        //   value: "user",
-        //   icon: "mdi-account-circle-outline",
-        //   text: "个人中心",
-        // },
       ],
-    };
+    }
   },
   watch: {
     value() {
-      this.$emit("currentTab", this.value);
+      this.$emit("currentTab", this.value)
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>
