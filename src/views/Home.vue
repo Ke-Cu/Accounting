@@ -11,7 +11,7 @@
         <router-view></router-view>
       </v-main>
       <v-footer app :class="dark ? 'bg-dark' : 'bg-light'">
-        <Bottom :dark="dark" @currentTab="getCurrentTab" />
+        <Bottom :dark="dark" />
       </v-footer>
     </v-app>
   </div>
@@ -21,18 +21,12 @@
 import { accounting } from "../api/index"
 import AppBar from "@/components/AppBar"
 import Bottom from "@/components/Bottom"
-import DailyBill from "@/components/DailyBill"
-import MonthBill from "@/components/MonthBill"
-import UpdateBill from "../components/UpdateBill"
 
 export default {
   name: "Home",
   components: {
     AppBar,
     Bottom,
-    DailyBill,
-    MonthBill,
-    UpdateBill,
   },
   data() {
     return {
@@ -40,7 +34,6 @@ export default {
       navIndex: 0,
       listData: [],
       totalAmount: 0,
-      currentTab: "recent",
       isLoading: false,
     }
   },
@@ -75,10 +68,6 @@ export default {
       const res = await accounting.getScopeAmount({ days })
       this.listData = res.details
       this.totalAmount = res.totalAmount
-    },
-    getCurrentTab(tab) {
-      this.currentTab = tab
-      this.$router.push({ name: tab })
     },
   },
 }

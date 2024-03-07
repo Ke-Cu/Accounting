@@ -10,29 +10,41 @@ import User from "@/views/User.vue"
 import DailyBill from "@/components/DailyBill"
 import MonthBill from "@/components/MonthBill"
 import UpdateBill from "@/components/UpdateBill"
+import Add from "@/components/Add"
+import CategoryList from "@/components/CategoryList"
 
 Vue.use(VueRouter)
 
 const routes = [
     {
         path: "/",
-        name: "home",
         component: Home,
         children: [
             {
-                path: "daily",
+                path: "",
                 name: "daily",
-                component: DailyBill
+                component: DailyBill,
             },
             {
                 path: "month",
                 name: "month",
-                component: MonthBill
+                component: MonthBill,
             },
             {
                 path: "update",
-                name: "update",
-                component: UpdateBill
+                component: UpdateBill,
+                children: [
+                    {
+                        path: "",
+                        name: "add",
+                        component: Add,
+                    },
+                    {
+                        path: "category",
+                        name: "category",
+                        component: CategoryList,
+                    },
+                ],
             },
         ],
     },

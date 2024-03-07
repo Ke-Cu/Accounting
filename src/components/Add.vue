@@ -1,5 +1,11 @@
 <template>
   <div class="pa-3 pt-0">
+    <div class="d-flex flex-row-reverse mb-6">
+      <v-btn @click="toEditCategory" color="primary">
+        <v-icon left> mdi-pencil-plus </v-icon>
+        编辑类别
+      </v-btn>
+    </div>
     <v-card class="grey lighten-4 pa-6 mb-4">
       <v-row justify="center">
         <DataPickerPage :date="date" @updateDate="updateDate" />
@@ -238,6 +244,9 @@ export default {
       } finally {
         this.alertLsit.splice(index, 1)
       }
+    },
+    toEditCategory() {
+      this.$router.push({ name: "category" })
     },
   },
 }

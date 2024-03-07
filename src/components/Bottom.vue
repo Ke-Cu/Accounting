@@ -7,7 +7,12 @@
       height="70"
       grow
     >
-      <v-btn v-for="(item, index) in btnList" :key="index" :value="item.value">
+      <v-btn
+        v-for="(item, index) in btnList"
+        :key="index"
+        :value="item.value"
+        :to="'/' + item.value"
+      >
         <span class="mt-1">{{ item.text }}</span>
         <v-icon>{{ item.icon }}</v-icon>
       </v-btn>
@@ -28,7 +33,7 @@ export default {
       value: "recent",
       btnList: [
         {
-          value: "daily",
+          value: "",
           icon: "mdi-calendar-today",
           text: "日账单",
         },
@@ -44,11 +49,6 @@ export default {
         },
       ],
     }
-  },
-  watch: {
-    value() {
-      this.$emit("currentTab", this.value)
-    },
   },
 }
 </script>
