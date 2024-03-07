@@ -11,6 +11,7 @@ export const accounting = {
   getBillByDate: async (params) => get('records-on-date', { params }),
   getTypes: async () => get('types'),
   addType: async (params) => post('type', params),
+  delType: async (params) => deleteMethod('type', { params }),
   addRecord: async (params) => post('record', params),
   delRecord: async (params) => deleteMethod('record', { params }),
 }

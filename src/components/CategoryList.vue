@@ -64,12 +64,18 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn text @click="dialogDelete = false"> 取消 </v-btn>
-          <v-btn color="primary" text @click="dialogDelete = false">
-            确认
-          </v-btn>
+          <v-btn color="primary" text @click="deleteCategory"> 确认 </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-snackbar v-model="snackbar" color="red" centered>
+      {{ snackbarText }}
+      <template v-slot:action="{ attrs }">
+        <v-btn icon v-bind="attrs" @click="snackbar = false">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -90,6 +96,8 @@ export default {
       newCategory: "",
       dialogDelete: false,
       category: "",
+      snackbar: false,
+      snackbarText: "错误",
     }
   },
   mounted() {
@@ -103,7 +111,6 @@ export default {
       this.$router.go(-1)
     },
     onClickDelete(category) {
-      console.log(category)
       this.category = category
       this.dialogDelete = true
     },
@@ -112,6 +119,18 @@ export default {
         await accounting.addType({ typeName: this.newCategory })
         this.getCategorys()
         this.dialog = false
+      }
+    },
+    async deleteCategory() {
+      try {
+        await accounting.delType({ id: this.category.typeId })
+      } catch (error) {
+        console.log(error)
+        this.snackbar = true
+        this.snackbarText = "删除失败（" + error.response.data + "）"
+      } finally {
+        this.getCategorys()
+        this.dialogDelete = false
       }
     },
   },
